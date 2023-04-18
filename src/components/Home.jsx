@@ -4,12 +4,9 @@ import { useSelector,useDispatch } from 'react-redux'
 import Notes from './Notes';
 import AddNote from './AddNote'
 
-
-
 const Home = () => {
-  const dispatch= useDispatch();
-  const notes =  useSelector((state) => state.notes.value)
-  console.log(notes)
+
+//   console.log(notes)
   return (
     <div>
       

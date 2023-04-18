@@ -69,7 +69,7 @@ catch(error){
 })
 
 
-router.delete('/deletenode/:id',fetchUser,async(req,res)=>{
+router.delete('/deletenote/:id',fetchUser,async(req,res)=>{
     try{
     const {title,tag,description} = req.body 
     const newNote = {}
