@@ -21,25 +21,15 @@ const dispatch = useDispatch()
         dispatch(addNote(note))
         dispatch(setAlert('successfully added a new note'))
         // console.log("error",error)
-        dispatch(fetchNotes())
+        dispatch(addNoteOnClient(note))
         
 
-        setNote({title:"",description:""})
+        setNote({title:"",description:"",tag:"default"})
     }
 
     const onChange = (e)=>{
-        setNote({...note, [e.target.name]: e.target.value})
+        setNote({...note, [e.target.name]: e.target.value,tag:"default"})
     }
-if(auth===""){
-    return(
-        <>
-        <div className='d-flex flex-column container'>
-        <h1>Welcome to InoteBook</h1>
-        <h3>Please login to see your notes</h3>
-        </div>
-        </>
-    )
-}
 
 
   return (

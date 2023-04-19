@@ -1,18 +1,17 @@
 import React,{useState} from 'react'
 import { useSelector,useDispatch } from 'react-redux'
-import { setAuthToken,setAlert, setError } from '../states/redux/notesSlice'
+import { setAuthToken,setAlert, setError,setLoading } from '../states/redux/notesSlice'
 import { useNavigate } from 'react-router-dom'
+import Loading from "./Loading"
 
 
-
-const Signup = ({ }) => {
+const Signup = () => {
     const navigate = useNavigate()
     const  dispatch= useDispatch()
-    const getAuth = useSelector((state) => state.notes.authToken);
+    const loading = useSelector((state) => state.notes.status);
     const [credentials,setCredentials] = useState({name:"",email:"",password:""})
     // console.log(credentials)
-    const host = "http://localhost:3000"
-
+    const host = "https://tiny-goat-handkerchief.cyclic.app"
 
 
         const onChange = (e)=>{
@@ -20,6 +19,7 @@ const Signup = ({ }) => {
         }
     
     const handleSubmit= async(e)=>{
+        dispatch(setLoading(true))
         e.preventDefault()
         const response = await fetch(`${host}/api/auth/createuser`, {
             method: 'POST',
@@ -32,6 +32,7 @@ const Signup = ({ }) => {
 
     
         const res=await response.json()
+        dispatch(setLoading(false))
         if(res.error){
             dispatch(setAlert(res.error))
         }
@@ -45,7 +46,9 @@ const Signup = ({ }) => {
     }
   return (
     <div>
-    <form  onSubmit={handleSubmit}>
+
+
+{loading===true ? <Loading/> :  <form  onSubmit={handleSubmit}>
     <div className="mb-3">
             <label htmlFor="password" className="form-label">Name</label>
             <input type="text" className="form-control"  value={credentials.name} onChange={onChange} name="name" id="password" />
@@ -62,7 +65,9 @@ const Signup = ({ }) => {
         
 
         <button type="submit" disabled={credentials.email<=5 || credentials.name.length<=3 || credentials.password.length<=6} className="btn btn-primary">Submit</button>
-    </form>
+    </form>}
+        
+    
 </div>
   )
 }

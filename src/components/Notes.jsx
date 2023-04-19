@@ -79,15 +79,13 @@ const Notes = () => {
     const notes = useSelector((state) => state.notes)
 
 
+
     if (notes.status === "loading") {
         return <h1>Loading Notes Data</h1>
     }
 
 
-    if (auth === "") {
-        return (
-            <h1 className='text-center' >Please Login to see you notes</h1>)
-    }
+
     return (
 
         <>

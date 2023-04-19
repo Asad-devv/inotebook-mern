@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const host = "http://localhost:3000"
+const host = "https://tiny-goat-handkerchief.cyclic.app"
 
 export const fetchNotes = createAsyncThunk('notes/fetchNotes', async (arg, { getState }) => {
   
   const state = getState();
-  console.log(state.notes.authToken)
+  // console.log(state.notes.authToken)
   const response = await fetch(`${host}/api/notes/fetchallnotes`, {
     method: 'GET',
     headers: {
@@ -55,7 +55,7 @@ export const editNote = createAsyncThunk('editNote', async (note,{ getState }) =
 export const deleteNote = createAsyncThunk('deleteNote', async (noteId,{ getState }) => {
 
   const state=getState()
-console.log(state)
+// console.log(state)
   const response = await fetch(`${host}/api/notes/deletenote/${noteId}`, {
     method: 'DELETE',
     headers: {
@@ -71,14 +71,16 @@ console.log(state)
 export const notesSlice = createSlice({
   name: 'notes',
   initialState: {
-    notes: null,
+    notes: [],
     status: null,
     error: null,
     authToken:"",
     alert : ""
   },
   reducers:
-{ 
+{ setLoading:(state,action)=>{
+    state.status = action.payload
+},
 
   setError:(state,action)=>{
     state.error = action.payload
@@ -92,7 +94,7 @@ export const notesSlice = createSlice({
 
       // const {authToken}=action.payload
       state.authToken=action.payload
-      console.log(action.payload)
+      // console.log(action.payload)
 
   } ,addNoteOnClient: (state, action) => {
     const { title, description, tag } = action.payload;
@@ -132,6 +134,9 @@ export const notesSlice = createSlice({
     builder
       .addCase(fetchNotes.pending, (state) => {
         state.status = 'loading';
+        console.log("gi")
+        console.log(state)
+        
       })
       .addCase(fetchNotes.fulfilled, (state, action) => {
         state.status = 'succeeded';
@@ -142,14 +147,13 @@ export const notesSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       })
-      .addCase(addNote.fulfilled, (state, action) => {
+      .addCase(addNote.fulfilled, (state) => {
+        state.status = "success"
+
+      })
+      .addCase(editNote.fulfilled, (state) => {
         
         state.status = "success"
-        // console.log(action.payload.errors[0].msg)
-      })
-      .addCase(editNote.fulfilled, (state, action) => {
-        
-        console.log(action)
         
       })
       .addCase(addNote.rejected, (state, action) => {
@@ -168,6 +172,6 @@ export const notesSlice = createSlice({
   }
 });
 
-export const { addNoteOnClient,deleteNoteOnClient,setAlert,editNoteOnClient,setAuthToken,setError} = notesSlice.actions
+export const { setLoading,addNoteOnClient,deleteNoteOnClient,setAlert,editNoteOnClient,setAuthToken,setError} = notesSlice.actions
 
 export default notesSlice.reducer;

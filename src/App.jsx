@@ -16,12 +16,16 @@ function App() {
       <>
       <Navbar/>
       
-      <div className="container">
+      <div className="contaianer">
         <div className='h-50'>
       <Alert/>
       </div>
       <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={
+        
+      <Home />
+      
+      } />
       <Route path="/about" element={<About />} />
       <Route path="/login" element={<Login authToken = {authToken} setAuthToken={setAuthToken} />} />
       <Route path="/signup" element={<Signup authToken = {authToken} setAuthToken={setAuthToken} />} />
